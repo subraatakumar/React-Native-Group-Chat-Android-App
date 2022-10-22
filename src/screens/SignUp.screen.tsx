@@ -17,16 +17,14 @@ import {useNavigation} from '@react-navigation/native';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
 import {useSelector} from 'react-redux';
-import {
-  signIn,
-  useAppDispatch,
-  hideModal,
-  showModal,
-  resetUserState,
-} from '../redux/store';
+import {hideModal, showModal} from '../redux/slices/modalSlice';
+import {signUp, useAppDispatch} from '../redux/store';
 import {CustomModalTypes} from '../components/CustomModal';
+import {resetUserState} from '../redux/slices/userSlice';
 
-const Login = () => {
+const SignUp = () => {
+  const [displayName, setDisplayName] = useState('');
+  const [displayNameErr, setdisplayNameErr] = useState(true);
   const [email, setEmail] = useState('');
   const [emailErr, setEmailErr] = useState(true);
   const [password, setPassword] = useState('');
@@ -36,33 +34,33 @@ const Login = () => {
     (state: any) => state.userReducer,
   );
 
+  const navigation = useNavigation();
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
-    console.log('Current User: ', user);
     if (user !== null) {
       navigation.replace(Screens.HOME);
     }
   }, [user]);
-
-  const navigation = useNavigation();
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (userStatus === Constants.LOADING) {
       dispatch(
         showModal({
           type: CustomModalTypes.WARNING,
-          title: 'Sign In',
-          body: 'Please wait Signing user.',
+          title: 'Sign Up',
+          body: 'Please wait Creating user.',
           closable: false,
         }),
       );
       return;
     }
+
     if (userStatus === Constants.REJECTED) {
       dispatch(
         showModal({
           type: CustomModalTypes.ERROR,
-          title: 'Sign In Error',
+          title: 'Sign Up Error',
           body: userError,
           closable: true,
         }),
@@ -71,16 +69,18 @@ const Login = () => {
 
       return;
     }
+
     if (userStatus == Constants.FULFILLED) {
       dispatch(hideModal());
       dispatch(resetUserState());
       return;
     }
   }, [userStatus, userError]);
+
   const loginClicked = () => {
     console.log(email, password, userStatus);
-    dispatch(signIn({email, password}));
-    console.log('after signin', userStatus);
+    dispatch(signUp({email, password, displayName}));
+    console.log('after Signup userstatus', userStatus);
   };
 
   return (
@@ -92,7 +92,7 @@ const Login = () => {
           backgroundColor: 'transparent',
           justifyContent: 'space-evenly',
         }}>
-        <View>
+        <View style={{marginBottom: 20}}>
           <Image source={Logo} style={{width: 250, height: 150}} />
           <Text
             style={{
@@ -100,12 +100,25 @@ const Login = () => {
               fontSize: 22,
               color: ThemeColors.primary,
               fontWeight: 'bold',
-              marginBottom: 20,
             }}>
             Group Chat Application
           </Text>
         </View>
         <View>
+          <CustomTextInput
+            placeholder="Display Name"
+            value={displayName}
+            setValue={setDisplayName}
+            err={displayNameErr}
+            setErr={setdisplayNameErr}
+            validation={['min', 'max']}
+            style={{borderColor: ThemeColors.primary}}
+            fct={ThemeColors.primary}
+            mb={10}
+            min={3}
+            max={50}
+          />
+
           <CustomTextInput
             placeholder="Email"
             value={email}
@@ -115,6 +128,7 @@ const Login = () => {
             validation={['valid-email']}
             style={{borderColor: ThemeColors.primary}}
             fct={ThemeColors.primary}
+            mb={10}
           />
           <CustomTextInput
             placeholder="Password"
@@ -127,21 +141,22 @@ const Login = () => {
             min={6}
             style={{borderColor: ThemeColors.primary}}
             fct={ThemeColors.primary}
+            mb={10}
           />
           <CustomButton
-            title={'Login'}
+            title={'Create User'}
             style={{marginBottom: 15}}
             bgc={ThemeColors.primary}
             onPressFn={loginClicked}
             br={5}
-            disabled={emailErr || passErr}
+            disabled={emailErr || passErr || displayNameErr}
           />
           <TouchableOpacity
             onPress={() => {
-              navigation.replace(Screens.SIGNUP);
+              navigation.replace(Screens.LOGIN);
             }}>
             <Text style={{textAlign: 'center', marginBottom: 25}}>
-              Don't have an account? Create One.
+              Have an account? Login.
             </Text>
           </TouchableOpacity>
         </View>
@@ -151,4 +166,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

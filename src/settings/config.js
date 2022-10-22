@@ -31,3 +31,11 @@ export const Constants = {
   FULFILLED: 'fulfilled',
   REJECTED: 'rejected',
 };
+
+export const Screens = {
+  SIGNUP: 'SignUp',
+  LOGIN: 'Login',
+  HOME: 'Home',
+  CREATEGROUP: 'CreateGroup',
+  CHATROOM: 'ChatRoom',
+};

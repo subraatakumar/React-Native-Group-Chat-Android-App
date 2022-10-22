@@ -64,7 +64,7 @@ const CustomButton = ({
   leftIconSize = 20,
   rightIconSize = 20,
 }: customButtonProps) => {
-  console.log(disabled, leftIcon);
+  //console.log(disabled, leftIcon);
   const innerContent = () => {
     return (
       <View

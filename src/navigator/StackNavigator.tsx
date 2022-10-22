@@ -1,11 +1,8 @@
 import * as React from 'react';
 import {DefaultTheme, NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../screens/Home.screen';
-import {ThemeColors} from '../settings/config';
-import ChatRoom from '../screens/ChatRoom.screen';
-import CreateGroup from '../screens/CreateGroup.screen';
-import Login from '../screens/Login.screen';
+import {Home, ChatRoom, CreateGroup, Login, SignUp} from '../screens';
+import {Screens, ThemeColors} from '../settings/config';
 
 const Stack = createNativeStackNavigator();
 
@@ -22,20 +19,25 @@ const StackNavigator = () => {
     <NavigationContainer theme={MyTheme}>
       <Stack.Navigator>
         <Stack.Screen
-          name="Login"
+          name={Screens.LOGIN}
           component={Login}
           options={{headerShown: false}}
         />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen
-          name="ChatRoom"
+          name={Screens.CHATROOM}
           component={ChatRoom}
           options={{title: 'Chat Room'}}
         />
         <Stack.Screen
-          name="CreateGroup"
+          name={Screens.CREATEGROUP}
           component={CreateGroup}
           options={{title: 'Create Group'}}
+        />
+        <Stack.Screen
+          name={Screens.SIGNUP}
+          component={SignUp}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

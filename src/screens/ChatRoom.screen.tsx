@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {View, Image, Text, StyleSheet} from 'react-native';
 import {MazicTextInput} from 'react-native-mazic-components';
@@ -13,14 +13,18 @@ import CustomTextInput from '../components/CustomTextInput';
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
   const [likes, setLikes] = useState(0);
+
   const navigation = useNavigation();
+  const {u} = useRoute().params;
+
+  console.log(u);
 
   const ImageHeader = props => {
     console.log(props);
     return (
       <View style={globalStyle.headerTitleContainer}>
         <Image source={man1} style={{width: 40, height: 40}} />
-        <Text style={globalStyle.headerTitle}>Ramesh Jena</Text>
+        <Text style={globalStyle.headerTitle}>{u.name}</Text>
         {/* <Header {...props} style={{backgroundColor: 'transparent'}} /> */}
       </View>
     );
@@ -31,7 +35,7 @@ const ChatRoom = () => {
       headerTitle: props => <ImageHeader {...props} />,
       headerTitleStyle: {flex: 1, textAlign: 'center'},
     });
-  }, []);
+  }, [u]);
 
   return (
     <View style={{flex: 1}}>

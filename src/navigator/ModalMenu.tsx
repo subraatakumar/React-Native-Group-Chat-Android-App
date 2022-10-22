@@ -1,20 +1,69 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   Modal,
   View,
   Text,
   TouchableWithoutFeedback,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
-import {ThemeColors} from '../settings/config';
+import {Constants, Screens, ThemeColors} from '../settings/config';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+  hideModal,
+  resetUserState,
+  showModal,
+  useAppDispatch,
+  signOut,
+} from '../redux/store';
+import {useSelector} from 'react-redux';
+import {CustomModalTypes} from '../components/CustomModal';
 
 type ModalMenuPropTypes = {
   setShowModal: Function;
 };
 
 const ModalMenu = ({setShowModal}: ModalMenuPropTypes) => {
+  const {signOutStatus, signOutError} = useSelector(
+    (state: any) => state.userReducer,
+  );
+
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (signOutStatus === Constants.LOADING) {
+      dispatch(
+        showModal({
+          type: CustomModalTypes.WARNING,
+          title: 'Sign Up',
+          body: 'Please wait Creating user.',
+          closable: false,
+        }),
+      );
+      return;
+    }
+    if (signOutStatus === Constants.REJECTED) {
+      dispatch(
+        showModal({
+          type: CustomModalTypes.ERROR,
+          title: 'Sign Out Error',
+          body: signOutError,
+          closable: true,
+        }),
+      );
+      dispatch(resetUserState());
+
+      return;
+    }
+    if (signOutStatus == Constants.FULFILLED) {
+      dispatch(hideModal());
+      dispatch(resetUserState());
+      return;
+    }
+  }, [signOutStatus]);
+
   return (
     <Modal
       transparent={true}
@@ -45,9 +94,30 @@ const ModalMenu = ({setShowModal}: ModalMenuPropTypes) => {
             <TouchableOpacity
               onPress={() => {
                 setShowModal(false);
-                navigation.navigate('CreateGroup');
+                navigation.navigate(Screens.CREATEGROUP);
               }}>
-              <Text style={{color: ThemeColors.black}}>Create Group</Text>
+              <View style={style.singleTile}>
+                <Ionicons
+                  name="md-people-circle-sharp"
+                  size={20}
+                  color={ThemeColors.primary}
+                />
+                <Text style={style.singleTileText}>Create Group</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                dispatch(signOut());
+                setShowModal(false);
+              }}>
+              <View style={style.singleTile}>
+                <Ionicons
+                  name="md-log-out"
+                  size={20}
+                  color={ThemeColors.primary}
+                />
+                <Text style={style.singleTileText}>Logout</Text>
+              </View>
             </TouchableOpacity>
           </View>
         </View>
@@ -57,3 +127,16 @@ const ModalMenu = ({setShowModal}: ModalMenuPropTypes) => {
 };
 
 export default ModalMenu;
+
+const style = StyleSheet.create({
+  singleTile: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  singleTileText: {
+    color: ThemeColors.primary,
+    textAlign: 'center',
+    marginLeft: 10,
+  },
+});

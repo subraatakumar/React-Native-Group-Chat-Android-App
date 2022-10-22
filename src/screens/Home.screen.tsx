@@ -1,4 +1,4 @@
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -11,17 +11,24 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import CustomButton from '../components/CustomButton';
-import {AppConfig, ThemeColors} from '../settings/config';
+import {AppConfig, Screens, ThemeColors} from '../settings/config';
 import SingleUserTile from '../components/SingleUserTile';
 import {globalStyle} from '../styles/global';
 import ModalMenu from '../navigator/ModalMenu';
 import UserList from '../components/UserList';
+import {useSelector} from 'react-redux';
+import {useAppDispatch, getAllUsers} from '../redux/store';
 
 const Home = () => {
   const [showEllipse, setShowEllipse] = useState(false);
+  const {user} = useSelector((state: any) => state.userReducer);
+
   const navigation = useNavigation();
-  console.log('showEllipse: ', showEllipse);
-  const GroupChatHomeHeader = () => {
+  const dispatch = useAppDispatch();
+
+  console.log('HomeScreen showEllipse: ', showEllipse);
+
+  const groupChatHomeHeader = () => {
     return (
       <View style={globalStyle.headerTitleContainer}>
         <Text style={{...globalStyle.headerTitle, flex: 1}}>
@@ -39,12 +46,23 @@ const Home = () => {
       </View>
     );
   };
+
+  useFocusEffect(() => {
+    navigation.setOptions({
+      headerTitle: () => groupChatHomeHeader(),
+      headerLeft: () => null,
+    });
+    dispatch(getAllUsers());
+  });
+
   useEffect(() => {
-    navigation.setOptions({headerTitle: () => <GroupChatHomeHeader />});
-  }, []);
+    if (user === null) {
+      navigation.replace(Screens.LOGIN);
+    }
+  }, [user]);
 
   const onClickTile = () => {
-    navigation.navigate('ChatRoom');
+    navigation.navigate(Screens.CHATROOM);
   };
 
   return (
