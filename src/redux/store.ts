@@ -3,9 +3,12 @@ import {useDispatch} from 'react-redux';
 import modalReducer from './slices/modalSlice';
 import userReducer from './slices/userSlice';
 import usersReducer from './slices/usersSlice';
+import chatMessageReducer from './slices/chatMessageSlice';
 
 import {signIn, signUp, signOut, resetUserState} from './slices/userSlice';
 import {showModal, hideModal} from './slices/modalSlice';
+import {writeMessage, setChatMessages} from './slices/chatMessageSlice';
+
 import {
   getAllUsers,
   resetUsersStatus,
@@ -17,6 +20,7 @@ const store = configureStore({
     modalReducer,
     userReducer,
     usersReducer,
+    chatMessageReducer,
   },
 });
 
@@ -34,6 +38,8 @@ export {
   getAllUsers,
   resetUsersStatus,
   resetUsersData,
+  writeMessage,
+  setChatMessages,
   useAppDispatch,
 };
 export default store;

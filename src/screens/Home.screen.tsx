@@ -69,30 +69,34 @@ const Home = () => {
   useEffect(() => {
     console.log('calling getALlUsers', users);
     //dispatch(getAllUsers());
-    firestore()
-      .collection('Users')
-      .onSnapshot(querySnapshot => {
-        if (querySnapshot == null) {
-          //reject('Error receiving data');
-        } else {
-          let result: ResultType[] = [];
-          querySnapshot.forEach(documentSnapshot => {
-            const {uid, name, email} = documentSnapshot.data();
-            result.push({
-              uid,
-              name,
-              email,
-            });
+    const firestoreusercollection = firestore().collection('Users');
+
+    return firestoreusercollection.onSnapshot(querySnapshot => {
+      if (querySnapshot == null) {
+        //reject('Error receiving data');
+      } else {
+        let result: {uid: string; name: string; email: string}[] = [];
+        querySnapshot.forEach(documentSnapshot => {
+          const {uid, name, email} = documentSnapshot.data();
+          result.push({
+            uid,
+            name,
+            email,
           });
-          //console.log(result);
-          dispatch(getAllUsers(result));
-        }
-      });
+        });
+        //console.log(result);
+
+        dispatch(getAllUsers(result));
+      }
+    });
   }, []);
 
   useEffect(() => {
     if (user === null) {
       navigation.replace(Screens.LOGIN);
+    } else {
+      let x = users.filter((x: any) => x.uid !== user.uid);
+      dispatch(getAllUsers(x));
     }
   }, [user]);
 
@@ -136,7 +140,7 @@ const Home = () => {
 
   return (
     <View>
-      {showEllipse && <ModalMenu setShowModal={setShowEllipse} />}
+      {showEllipse && <ModalMenu setShowModal={setShowEllipse} user={user} />}
       <UserList users={users} />
     </View>
   );

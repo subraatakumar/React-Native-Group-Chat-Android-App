@@ -17,40 +17,7 @@ type StoreStateType = {
 
 export const getAllUsers = createAsyncThunk('users/getallusers', async data => {
   console.log('Started getting user data');
-  return data;
-  // return new Promise((resolve, reject) => {
-  //   firestore()
-  //     .collection('Users')
-  //     .onSnapshot(querySnapshot => {
-  //       if (querySnapshot == null) {
-  //         reject('Error receiving data');
-  //       } else {
-  //         let result: ResultType[] = [];
-  //         querySnapshot.forEach(documentSnapshot => {
-  //           const {uid, name, email} = documentSnapshot.data();
-  //           result.push({
-  //             uid,
-  //             name,
-  //             email,
-  //           });
-  //         });
-  //         //console.log(result);
-  //         resolve(result);
-  //       }
-  //     });
-  // });
-
-  // let result: ResultType[] = [];
-  // const usersQuerySnapshot = await firestore().collection('Users').get();
-
-  // usersQuerySnapshot.forEach(documentSnapshot => {
-  //   result.push({
-  //     uid: documentSnapshot.data().uid,
-  //     name: documentSnapshot.data().name,
-  //     email: documentSnapshot.data().email,
-  //   });
-  // });
-  // return result;
+  return data.sort((a, b) => a.name.localeCompare(b.name));
 });
 
 const usersSlice = createSlice({

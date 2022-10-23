@@ -22,9 +22,10 @@ import {CustomModalTypes} from '../components/CustomModal';
 
 type ModalMenuPropTypes = {
   setShowModal: Function;
+  user: any;
 };
 
-const ModalMenu = ({setShowModal}: ModalMenuPropTypes) => {
+const ModalMenu = ({setShowModal, user}: ModalMenuPropTypes) => {
   const {signOutStatus, signOutError} = useSelector(
     (state: any) => state.userReducer,
   );
@@ -91,6 +92,25 @@ const ModalMenu = ({setShowModal}: ModalMenuPropTypes) => {
               borderRadius: 4,
               overflow: 'visible',
             }}>
+            <TouchableOpacity
+              onPress={() => {
+                setShowModal(false);
+              }}>
+              <View
+                style={{
+                  ...style.singleTile,
+                  borderBottomColor: 'green',
+                  borderBottomWidth: 1,
+                  marginTop: 0,
+                }}>
+                {/* <Ionicons
+                  name="md-people-circle-sharp"
+                  size={20}
+                  color={ThemeColors.primary}
+                /> */}
+                <Text style={style.singleTileText}>Hi {user.displayName}</Text>
+              </View>
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 setShowModal(false);
