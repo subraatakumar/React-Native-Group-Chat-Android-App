@@ -46,6 +46,8 @@ export const signUp = createAsyncThunk(
         name: data.displayName,
         email: data.email,
         uid: user?.uid,
+        isgroup: false,
+        members: null,
       });
 
     return true;

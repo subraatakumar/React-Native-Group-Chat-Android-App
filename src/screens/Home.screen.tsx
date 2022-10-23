@@ -75,12 +75,8 @@ const Home = () => {
       if (querySnapshot != null) {
         let result: {uid: string; name: string; email: string}[] = [];
         querySnapshot.forEach(documentSnapshot => {
-          const {uid, name, email} = documentSnapshot.data();
-          result.push({
-            uid,
-            name,
-            email,
-          });
+          const data = documentSnapshot.data();
+          result.push(data);
         });
         //console.log(result);
         let x = user ? result.filter((x: any) => x.uid !== user.uid) : result;

@@ -35,6 +35,7 @@ type customButtonProps = {
   rightIcon?: string | null;
   leftIconSize?: number | null;
   rightIconSize?: number | null;
+  textStyle?: any;
 };
 
 const CustomButton = ({
@@ -65,6 +66,7 @@ const CustomButton = ({
   rightIcon = null,
   leftIconSize = 20,
   rightIconSize = 20,
+  textStyle = {},
 }: customButtonProps) => {
   //console.log(disabled, leftIcon);
   const innerContent = () => {
@@ -86,7 +88,18 @@ const CustomButton = ({
         ) : (
           <View></View>
         )}
-        {title && <Text style={{color: tc, fontSize: ts}}>{title}</Text>}
+        {title && (
+          <Text
+            style={{
+              color: tc,
+              fontSize: ts,
+              textAlign: 'center',
+              width: 'auto',
+              ...textStyle,
+            }}>
+            {title}
+          </Text>
+        )}
         {rightIcon ? (
           <Ionicon
             name={rightIcon}

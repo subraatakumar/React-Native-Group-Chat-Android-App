@@ -12,14 +12,18 @@ import {
 import {Constants} from '../settings/config';
 import {CustomModalTypes} from './CustomModal';
 import SingleUserTile from './SingleUserTile';
+import {SingleUserType} from '../settings/types';
 
-type SingleUserType = {
-  email: string;
-  uid: string;
-  name: string;
+type UserListPropTypes = {
+  users: any;
+  onLongPress: Function;
+  showGroups: boolean;
 };
-
-const UserList = ({users}) => {
+const UserList = ({
+  users,
+  onLongPress = () => {},
+  showGroups = true,
+}: UserListPropTypes) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   //console.log('userList component users: ', users);
@@ -28,12 +32,16 @@ const UserList = ({users}) => {
     navigation.navigate('ChatRoom', {u} as never);
   };
 
-  const Item = ({u}: {u: SingleUserType}) => (
-    <TouchableOpacity onPress={() => onClickTile(u)}>
-      <SingleUserTile u={u} />
-    </TouchableOpacity>
-  );
-
+  const Item = ({u}: {u: SingleUserType}) =>
+    !u.isGroup || showGroups ? (
+      <TouchableOpacity
+        onPress={() => onClickTile(u)}
+        onLongPress={() => onLongPress(u)}>
+        <SingleUserTile u={u} />
+      </TouchableOpacity>
+    ) : (
+      <></>
+    );
   return (
     <View>
       <FlatList
