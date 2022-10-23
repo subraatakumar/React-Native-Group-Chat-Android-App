@@ -26,7 +26,7 @@ const SingleUserTile = ({
   m = 5,
   br = 20,
 }: SingleUserTileProps) => {
-  console.log('Single User Tile Component u: ', u);
+  //console.log('Single User Tile Component u: ', u);
   const onSubmit = () => {
     console.log('Trash button clicked');
   };

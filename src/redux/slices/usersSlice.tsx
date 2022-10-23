@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import firestore from '@react-native-firebase/firestore';
 import {Constants} from '../../settings/config';
+import {compareObj} from '../../helpers';
 
 type ResultType = {
   name: string;
@@ -14,20 +15,42 @@ type StoreStateType = {
   usersError: string;
 };
 
-export const getAllUsers = createAsyncThunk('users/getallusers', async () => {
+export const getAllUsers = createAsyncThunk('users/getallusers', async data => {
   console.log('Started getting user data');
-  let result: ResultType[] = [];
-  const usersQuerySnapshot = await firestore().collection('Users').get();
+  return data;
+  // return new Promise((resolve, reject) => {
+  //   firestore()
+  //     .collection('Users')
+  //     .onSnapshot(querySnapshot => {
+  //       if (querySnapshot == null) {
+  //         reject('Error receiving data');
+  //       } else {
+  //         let result: ResultType[] = [];
+  //         querySnapshot.forEach(documentSnapshot => {
+  //           const {uid, name, email} = documentSnapshot.data();
+  //           result.push({
+  //             uid,
+  //             name,
+  //             email,
+  //           });
+  //         });
+  //         //console.log(result);
+  //         resolve(result);
+  //       }
+  //     });
+  // });
 
-  usersQuerySnapshot.forEach(documentSnapshot => {
-    result.push({
-      uid: documentSnapshot.data().uid,
-      name: documentSnapshot.data().name,
-      email: documentSnapshot.data().email,
-    });
-  });
+  // let result: ResultType[] = [];
+  // const usersQuerySnapshot = await firestore().collection('Users').get();
 
-  return result;
+  // usersQuerySnapshot.forEach(documentSnapshot => {
+  //   result.push({
+  //     uid: documentSnapshot.data().uid,
+  //     name: documentSnapshot.data().name,
+  //     email: documentSnapshot.data().email,
+  //   });
+  // });
+  // return result;
 });
 
 const usersSlice = createSlice({
@@ -55,13 +78,19 @@ const usersSlice = createSlice({
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.usersStatus = Constants.FULFILLED;
-        state.users = action.payload;
-        console.log('getAllUsers fulfilled', action);
+        console.log(
+          'Comparing',
+          !compareObj(state.users, action.payload, 'uid'),
+        );
+        if (!compareObj(state.users, action.payload, 'uid')) {
+          console.log('Updating state of users');
+          state.users = [...action.payload];
+        }
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.usersStatus = Constants.REJECTED;
         action?.error?.message && (state.usersError = action?.error?.message);
-        console.log('getAllUsers Rejected', action);
+        //console.log('getAllUsers Rejected', action);
       });
   },
 });

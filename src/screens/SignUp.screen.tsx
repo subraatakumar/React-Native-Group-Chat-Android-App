@@ -8,11 +8,17 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Logo from '../assets/img/logo.gif';
 import backImage from '../assets/img/backImage.png';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
-import {Constants, Screens, ThemeColors} from '../settings/config';
+import {
+  Constants,
+  deviceHeight,
+  deviceWidth,
+  Element,
+  Screens,
+  ThemeColors,
+} from '../settings/config';
 import {useNavigation} from '@react-navigation/native';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import auth from '@react-native-firebase/auth';
@@ -21,6 +27,7 @@ import {hideModal, showModal} from '../redux/slices/modalSlice';
 import {signUp, useAppDispatch} from '../redux/store';
 import {CustomModalTypes} from '../components/CustomModal';
 import {resetUserState} from '../redux/slices/userSlice';
+import Logo from '../components/Logo';
 
 const SignUp = () => {
   const [displayName, setDisplayName] = useState('');
@@ -92,18 +99,7 @@ const SignUp = () => {
           backgroundColor: 'transparent',
           justifyContent: 'space-evenly',
         }}>
-        <View style={{marginBottom: 20}}>
-          <Image source={Logo} style={{width: 250, height: 150}} />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 22,
-              color: ThemeColors.primary,
-              fontWeight: 'bold',
-            }}>
-            Group Chat Application
-          </Text>
-        </View>
+        <Logo />
         <View>
           <CustomTextInput
             placeholder="Display Name"
@@ -117,6 +113,8 @@ const SignUp = () => {
             mb={10}
             min={3}
             max={50}
+            h={Element.height}
+            w={Element.width}
           />
 
           <CustomTextInput
@@ -129,6 +127,8 @@ const SignUp = () => {
             style={{borderColor: ThemeColors.primary}}
             fct={ThemeColors.primary}
             mb={10}
+            h={Element.height}
+            w={Element.width}
           />
           <CustomTextInput
             placeholder="Password"
@@ -142,6 +142,8 @@ const SignUp = () => {
             style={{borderColor: ThemeColors.primary}}
             fct={ThemeColors.primary}
             mb={10}
+            h={Element.height}
+            w={Element.width}
           />
           <CustomButton
             title={'Create User'}
@@ -150,6 +152,8 @@ const SignUp = () => {
             onPressFn={loginClicked}
             br={5}
             disabled={emailErr || passErr || displayNameErr}
+            h={Element.height}
+            w={Element.width}
           />
           <TouchableOpacity
             onPress={() => {

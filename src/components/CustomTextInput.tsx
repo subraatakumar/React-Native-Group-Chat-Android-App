@@ -153,6 +153,7 @@ const CustomTextInput = ({
           fontSize: fsi,
           backgroundColor: bgci,
           color: fci,
+          padding: h ? h / 5 : null,
 
           ...style,
         }}

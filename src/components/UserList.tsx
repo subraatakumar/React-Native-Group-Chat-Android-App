@@ -1,8 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {TouchableOpacity, FlatList} from 'react-native';
+import React, {memo, useEffect} from 'react';
+import {TouchableOpacity, FlatList, ScrollView, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {useAppDispatch} from '../redux/store';
+import {
+  hideModal,
+  resetUsersData,
+  resetUsersStatus,
+  showModal,
+  useAppDispatch,
+} from '../redux/store';
+import {Constants} from '../settings/config';
+import {CustomModalTypes} from './CustomModal';
 import SingleUserTile from './SingleUserTile';
 
 type SingleUserType = {
@@ -10,12 +18,12 @@ type SingleUserType = {
   uid: string;
   name: string;
 };
-const UserList = () => {
-  const {users} = useSelector((state: any) => state.usersReducer);
 
+const UserList = ({users}) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  console.log('userList component users: ', users);
+  //console.log('userList component users: ', users);
+
   const onClickTile = (u: SingleUserType) => {
     navigation.navigate('ChatRoom', {u} as never);
   };
@@ -27,14 +35,14 @@ const UserList = () => {
   );
 
   return (
-    <>
+    <View>
       <FlatList
         data={users}
         renderItem={item => <Item u={item.item} />}
         keyExtractor={item => item.uid}
       />
-    </>
+    </View>
   );
 };
 
-export default UserList;
+export default memo(UserList);

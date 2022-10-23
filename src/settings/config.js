@@ -1,3 +1,13 @@
+import {Dimensions} from 'react-native';
+
+export const deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
+export const Element = {
+  height: deviceHeight > 600 ? 40 : 30,
+  width: deviceWidth > 350 ? 250 : 200,
+};
+console.log('Width, height : ', deviceWidth, deviceHeight);
+
 export const AppConfig = {
   title: 'Group Chat',
 };

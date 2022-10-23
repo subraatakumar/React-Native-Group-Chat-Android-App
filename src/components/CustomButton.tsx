@@ -28,6 +28,7 @@ type customButtonProps = {
   bgc?: string; // background color
   br?: number; // border radius
   w?: number | string; // width
+  h?: number | null; // height
   sc?: string; // shadow color
   disabled?: boolean;
   leftIcon?: string | null; // Ionicon Image on left
@@ -45,6 +46,7 @@ const CustomButton = ({
   bgc = 'rgba(6,146,239,1)',
   br = 30,
   w = title ? 250 : 40,
+  h = null,
   sc = 'rgba(6,146,239,1)',
   tc = '#fff',
   ts = null, // Title Size
@@ -53,7 +55,7 @@ const CustomButton = ({
   mr = 0,
   mt = 0,
   mb = 0,
-  p = 10,
+  p = h ? h / 5 : 10,
   pl = null,
   pr = null,
   pt = null,
@@ -117,6 +119,7 @@ const CustomButton = ({
         shadowOffset: {width: 0, height: 5},
         shadowOpacity: 1.0,
         width: w,
+        height: h,
         margin: m,
         ...style,
       }}>

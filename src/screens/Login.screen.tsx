@@ -8,7 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import Logo from '../assets/img/logo.gif';
+
 import backImage from '../assets/img/backImage.png';
 import CustomButton from '../components/CustomButton';
 import CustomTextInput from '../components/CustomTextInput';
@@ -25,6 +25,7 @@ import {
   resetUserState,
 } from '../redux/store';
 import {CustomModalTypes} from '../components/CustomModal';
+import Logo from '../components/Logo';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -92,19 +93,7 @@ const Login = () => {
           backgroundColor: 'transparent',
           justifyContent: 'space-evenly',
         }}>
-        <View>
-          <Image source={Logo} style={{width: 250, height: 150}} />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontSize: 22,
-              color: ThemeColors.primary,
-              fontWeight: 'bold',
-              marginBottom: 20,
-            }}>
-            Group Chat Application
-          </Text>
-        </View>
+        <Logo />
         <View>
           <CustomTextInput
             placeholder="Email"
