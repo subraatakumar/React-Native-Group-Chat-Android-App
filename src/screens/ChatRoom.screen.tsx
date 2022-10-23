@@ -1,11 +1,11 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View, Image, Text, StyleSheet, FlatList} from 'react-native';
 import {MazicTextInput} from 'react-native-mazic-components';
 import CustomButton from '../components/CustomButton';
 import {Header} from 'react-native/Libraries/NewAppScreen';
 import man1 from '../assets/img/man1.png';
-import {ThemeColors} from '../settings/config';
+import {deviceHeight, ThemeColors} from '../settings/config';
 import {shadows} from '../styles/shadows';
 import LikeButton from '../components/LikeButton';
 import {globalStyle} from '../styles/global';
@@ -14,6 +14,7 @@ import {setChatMessages, useAppDispatch, writeMessage} from '../redux/store';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import {SingleChatMessageType} from '../settings/types';
+import style from './ChatRoom.style';
 
 const ChatRoom = () => {
   const [message, setMessage] = useState('');
@@ -28,10 +29,10 @@ const ChatRoom = () => {
     (state: any) => state.chatMessageReducer,
   );
 
-  console.log(u, writeMessageStatus, writeMessageError);
+  //console.log(u, writeMessageStatus, writeMessageError);
 
   const ImageHeader = (props: any) => {
-    console.log(props);
+    //console.log(props);
     return (
       <View style={globalStyle.headerTitleContainer}>
         <Image source={man1} style={{width: 40, height: 40}} />
@@ -48,18 +49,21 @@ const ChatRoom = () => {
   }, [u]);
 
   useEffect(() => {
-    const firestoremessagecollection = firestore().collection('Messages');
+    const firestoremessagecollection = firestore()
+      .collection('Messages')
+      .where('receivedId', 'in', [u.uid, user.uid]);
 
     return firestoremessagecollection.onSnapshot(querySnapshot => {
-      if (querySnapshot == null) {
-        //reject('Error receiving data');
-      } else {
+      if (querySnapshot !== null) {
         let result: SingleChatMessageType[] = [];
         querySnapshot.forEach(documentSnapshot => {
           const data = documentSnapshot.data();
           result.push(data);
         });
         //console.log(result);
+        result = result.filter(
+          a => a.sentId === u.uid || a.sentId === user.uid,
+        );
         result.sort((a, b) => a.createdAt - b.createdAt);
         dispatch(setChatMessages(result));
       }
@@ -67,14 +71,6 @@ const ChatRoom = () => {
   }, []);
 
   const sendMessage = () => {
-    // console.log({
-    //   text: message,
-    //   receivedId: u.uid,
-    //   sentId: user.uid,
-    //   createdAt: Date.now(),
-    //   groupId: null,
-    //   likes: [],
-    // });
     dispatch(
       writeMessage({
         text: message,
@@ -85,6 +81,7 @@ const ChatRoom = () => {
         likes: [],
       }),
     );
+    setMessage('');
   };
 
   const SingleChatMessage = ({item}) =>
@@ -101,26 +98,16 @@ const ChatRoom = () => {
         <View style={style.leftTriangle}></View>
       </View>
     );
+
   return (
     <View style={{flex: 1}}>
       <View style={{flex: 1, margin: 10}}>
         <FlatList
           data={chatMessages}
+          inverted
+          contentContainerStyle={{flexDirection: 'column-reverse'}}
           renderItem={item => <SingleChatMessage item={item.item} />}
         />
-        <View style={style.receivedMessage}>
-          <Text>Chat Message One</Text>
-          <LikeButton
-            value={likes}
-            setValue={() => setLikes(prev => prev + 1)}
-          />
-          <View style={style.leftTriangle}></View>
-        </View>
-        <View style={style.sentMessage}>
-          <Text>Chat Message Three</Text>
-          <LikeButton disabled={true} position={'right'} setValue={() => {}} />
-          <View style={style.rightTriangle}></View>
-        </View>
       </View>
       <View
         style={{
@@ -154,57 +141,3 @@ const ChatRoom = () => {
 };
 
 export default ChatRoom;
-
-const style = StyleSheet.create({
-  receivedMessage: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    marginVertical: 15,
-  },
-
-  leftTriangle: {
-    position: 'absolute',
-    width: 0,
-    height: 0,
-    borderTopWidth: 8,
-    borderRightWidth: 8,
-    borderBottomWidth: 8,
-    borderLeftWidth: 8,
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    borderTopColor: '#FFF',
-    borderBottomColor: 'transparent',
-    borderRightColor: '#FFF',
-    borderLeftColor: 'transparent',
-    left: -10,
-  },
-
-  sentMessage: {
-    alignSelf: 'flex-end',
-    backgroundColor: '#fff',
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
-    margin: 5,
-  },
-
-  rightTriangle: {
-    position: 'absolute',
-    width: 0,
-    height: 0,
-    borderTopWidth: 8,
-    borderRightWidth: 8,
-    borderBottomWidth: 8,
-    borderLeftWidth: 8,
-    borderStyle: 'solid',
-    backgroundColor: 'transparent',
-    borderTopColor: '#FFF',
-    borderBottomColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderLeftColor: '#FFF',
-    right: -10,
-  },
-});

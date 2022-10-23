@@ -38,7 +38,7 @@ const Home = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  console.log('HomeScreen showEllipse: ', showEllipse);
+  //console.log('HomeScreen showEllipse: ', showEllipse);
 
   const groupChatHomeHeader = () => {
     return (
@@ -67,14 +67,12 @@ const Home = () => {
   });
 
   useEffect(() => {
-    console.log('calling getALlUsers', users);
+    console.log('calling getALlUsers');
     //dispatch(getAllUsers());
     const firestoreusercollection = firestore().collection('Users');
 
     return firestoreusercollection.onSnapshot(querySnapshot => {
-      if (querySnapshot == null) {
-        //reject('Error receiving data');
-      } else {
+      if (querySnapshot != null) {
         let result: {uid: string; name: string; email: string}[] = [];
         querySnapshot.forEach(documentSnapshot => {
           const {uid, name, email} = documentSnapshot.data();
@@ -85,8 +83,8 @@ const Home = () => {
           });
         });
         //console.log(result);
-
-        dispatch(getAllUsers(result));
+        let x = user ? result.filter((x: any) => x.uid !== user.uid) : result;
+        dispatch(getAllUsers(x));
       }
     });
   }, []);
