@@ -25,8 +25,13 @@ import {
   resetUsersData,
   resetUsersStatus,
   hideModal,
+  showFlash,
+  hideFlash,
 } from '../redux/store';
 import {CustomModalTypes} from '../components/CustomModal';
+import {SingleUserType} from '../settings/types';
+import removeGroupsFromCurrentUser from '../helpers/removeGroupsFromCurrentUser';
+import Logo from '../components/Logo';
 
 const Home = () => {
   const [showEllipse, setShowEllipse] = useState(false);
@@ -67,20 +72,24 @@ const Home = () => {
   });
 
   useEffect(() => {
+    dispatch(showFlash());
     console.log('calling getALlUsers');
     //dispatch(getAllUsers());
     const firestoreusercollection = firestore().collection('Users');
 
     return firestoreusercollection.onSnapshot(querySnapshot => {
       if (querySnapshot != null) {
-        let result: {uid: string; name: string; email: string}[] = [];
+        let result: SingleUserType[] = [];
         querySnapshot.forEach(documentSnapshot => {
           const data = documentSnapshot.data();
           result.push(data);
         });
-        //console.log(result);
+        // Remove current user from list
         let x = user ? result.filter((x: any) => x.uid !== user.uid) : result;
-        dispatch(getAllUsers(x));
+        // Remove groups that does not belong to current user
+        let y = removeGroupsFromCurrentUser(x, user);
+        dispatch(getAllUsers(y));
+        dispatch(hideFlash());
       }
     });
   }, []);
@@ -131,7 +140,7 @@ const Home = () => {
   const onClickTile = () => {
     navigation.navigate(Screens.CHATROOM);
   };
-
+  console.log('Show Flash', showFlash);
   return (
     <View>
       {showEllipse && <ModalMenu setShowModal={setShowEllipse} user={user} />}

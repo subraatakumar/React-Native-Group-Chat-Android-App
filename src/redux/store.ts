@@ -5,6 +5,7 @@ import userReducer from './slices/userSlice';
 import usersReducer from './slices/usersSlice';
 import chatMessageReducer from './slices/chatMessageSlice';
 import groupReducer from './slices/groupSlice';
+import flashReducer from './slices/flashSlice';
 
 import {signIn, signUp, signOut, resetUserState} from './slices/userSlice';
 import {showModal, hideModal} from './slices/modalSlice';
@@ -15,6 +16,7 @@ import {
   resetGroupStatus,
   resetGroupDeletionStatus,
 } from './slices/groupSlice';
+import {showFlash, hideFlash} from './slices/flashSlice';
 
 import {
   getAllUsers,
@@ -29,6 +31,7 @@ const store = configureStore({
     usersReducer,
     chatMessageReducer,
     groupReducer,
+    flashReducer,
   },
 });
 
@@ -52,6 +55,9 @@ export {
   deleteGroup,
   resetGroupStatus,
   resetGroupDeletionStatus,
+  showFlash,
+  hideFlash,
   useAppDispatch,
 };
+
 export default store;
