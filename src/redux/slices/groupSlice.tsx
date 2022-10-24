@@ -6,6 +6,7 @@ import {SingleUserType} from '../../settings/types';
 export const createGroup = createAsyncThunk(
   'group/create',
   async (data: SingleUserType) => {
+    console.log('Creating Group Data Received: ', data);
     await firestore()
       .collection('Users')
       .doc('' + data.uid)

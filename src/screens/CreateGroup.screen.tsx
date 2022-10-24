@@ -27,14 +27,12 @@ const CreateGroup = () => {
   const {groupCreationStatus, groupCreationError} = useSelector(
     (state: any) => state.groupReducer,
   );
-  console.log('CreateGroupScreen', users);
 
   useEffect(() => {
     setFilteredUsers([...users]);
   }, [users]);
 
   const onLongPressFilteredUsers = (prop: any) => {
-    console.log('Long Pressed:', prop);
     setSelectedUsers(prev => [...prev, prop]);
     setFilteredUsers(prev => prev.filter(a => a.uid !== prop.uid));
   };
@@ -84,17 +82,20 @@ const CreateGroup = () => {
 
   const createGroupInServer = () => {
     dispatch(resetGroupStatus());
-    dispatch(
-      createGroup({
-        uid: Date.now().toString(),
-        name: groupName,
-        email: null,
-        isGroup: true,
-        members: JSON.stringify(filteredUsers),
-        adminId: user.uid,
-        createdAt: Date.now(),
-      }),
-    );
+    const {displayName, email, uid} = user;
+    let data = {
+      uid: Date.now().toString(),
+      name: groupName,
+      email: null,
+      isGroup: true,
+      members: JSON.stringify([
+        {name: displayName, email, uid},
+        ...selectedUsers,
+      ]),
+      adminId: user.uid,
+      createdAt: Date.now(),
+    };
+    dispatch(createGroup(data));
   };
 
   return (

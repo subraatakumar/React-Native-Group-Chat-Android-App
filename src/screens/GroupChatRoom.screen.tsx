@@ -1,11 +1,19 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React, {useEffect, useRef, useState} from 'react';
-import {View, Image, Text, StyleSheet, FlatList} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {MazicTextInput} from 'react-native-mazic-components';
 import CustomButton from '../components/CustomButton';
 import {Header} from 'react-native/Libraries/NewAppScreen';
 import man1 from '../assets/img/man1.png';
-import {deviceHeight, ThemeColors} from '../settings/config';
+import people from '../assets/img/people.png';
+import {deviceHeight, Screens, ThemeColors} from '../settings/config';
 import {shadows} from '../styles/shadows';
 import LikeButton from '../components/LikeButton';
 import {globalStyle} from '../styles/global';
@@ -16,7 +24,7 @@ import firestore from '@react-native-firebase/firestore';
 import {SingleChatMessageType} from '../settings/types';
 import style from './ChatRoom.style';
 
-const ChatRoom = () => {
+const GroupChatRoom = () => {
   const [message, setMessage] = useState('');
   const [likes, setLikes] = useState(0);
 
@@ -32,12 +40,18 @@ const ChatRoom = () => {
   //console.log(u, writeMessageStatus, writeMessageError);
 
   const ImageHeader = (props: any) => {
-    //console.log(props);
+    console.log('Image Header Props:', u.members);
+
     return (
-      <View style={globalStyle.headerTitleContainer}>
-        <Image source={man1} style={{width: 40, height: 40}} />
-        <Text style={globalStyle.headerTitle}>{u.name}</Text>
-      </View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate(Screens.VIEWGROUPMEMBERS, {members: u.members});
+        }}>
+        <View style={globalStyle.headerTitleContainer}>
+          <Image source={people} style={{width: 40, height: 40}} />
+          <Text style={globalStyle.headerTitle}>{u.name}</Text>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -51,7 +65,7 @@ const ChatRoom = () => {
   useEffect(() => {
     const firestoremessagecollection = firestore()
       .collection('Messages')
-      .where('receivedId', 'in', [u.uid, user.uid]);
+      .where('groupId', 'in', [u.uid]);
 
     return firestoremessagecollection.onSnapshot(querySnapshot => {
       if (querySnapshot !== null) {
@@ -61,9 +75,9 @@ const ChatRoom = () => {
           result.push(data);
         });
         //console.log(result);
-        result = result.filter(
-          a => a.sentId === u.uid || a.sentId === user.uid,
-        );
+        // result = result.filter(
+        //   a => a.sentId === u.uid || a.sentId === user.uid,
+        // );
         result.sort((a, b) => a.createdAt - b.createdAt);
         dispatch(setChatMessages(result));
       }
@@ -77,7 +91,7 @@ const ChatRoom = () => {
         receivedId: u.uid,
         sentId: user.uid,
         createdAt: Date.now(),
-        groupId: null,
+        groupId: u.uid,
         likes: [],
       }),
     );
@@ -140,4 +154,4 @@ const ChatRoom = () => {
   );
 };
 
-export default ChatRoom;
+export default GroupChatRoom;

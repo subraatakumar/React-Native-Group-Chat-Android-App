@@ -48,4 +48,6 @@ export const Screens = {
   HOME: 'Home',
   CREATEGROUP: 'CreateGroup',
   CHATROOM: 'ChatRoom',
+  GROUPCHATROOM: 'GroupChatRoom',
+  VIEWGROUPMEMBERS: 'ViewGroupMembers',
 };

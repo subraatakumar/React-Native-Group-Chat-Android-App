@@ -9,7 +9,7 @@ import {
   showModal,
   useAppDispatch,
 } from '../redux/store';
-import {Constants} from '../settings/config';
+import {Constants, Screens} from '../settings/config';
 import {CustomModalTypes} from './CustomModal';
 import SingleUserTile from './SingleUserTile';
 import {SingleUserType} from '../settings/types';
@@ -29,7 +29,11 @@ const UserList = ({
   //console.log('userList component users: ', users);
 
   const onClickTile = (u: SingleUserType) => {
-    navigation.navigate('ChatRoom', {u} as never);
+    if (u.isGroup) {
+      navigation.navigate(Screens.GROUPCHATROOM as never, {u} as never);
+    } else {
+      navigation.navigate(Screens.CHATROOM as never, {u} as never);
+    }
   };
 
   const Item = ({u}: {u: SingleUserType}) =>
