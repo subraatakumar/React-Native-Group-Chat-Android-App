@@ -140,7 +140,6 @@ const Home = () => {
   const onClickTile = () => {
     navigation.navigate(Screens.CHATROOM);
   };
-  console.log('Show Flash', showFlash);
   return (
     <View>
       {showEllipse && <ModalMenu setShowModal={setShowEllipse} user={user} />}

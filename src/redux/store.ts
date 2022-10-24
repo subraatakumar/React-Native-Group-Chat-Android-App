@@ -9,7 +9,11 @@ import flashReducer from './slices/flashSlice';
 
 import {signIn, signUp, signOut, resetUserState} from './slices/userSlice';
 import {showModal, hideModal} from './slices/modalSlice';
-import {writeMessage, setChatMessages} from './slices/chatMessageSlice';
+import {
+  writeMessage,
+  setChatMessages,
+  increaseLike,
+} from './slices/chatMessageSlice';
 import {
   createGroup,
   deleteGroup,
@@ -57,6 +61,7 @@ export {
   resetGroupDeletionStatus,
   showFlash,
   hideFlash,
+  increaseLike,
   useAppDispatch,
 };
 

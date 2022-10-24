@@ -1,13 +1,29 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {Constants} from '../../settings/config';
 import firestore from '@react-native-firebase/firestore';
-import {SingleChatMessageType} from '../../settings/types';
+import {
+  SingleChatMessageType,
+  FireStoreSingleChatMessageType,
+} from '../../settings/types';
 
 export const writeMessage = createAsyncThunk(
   'chatmessage/write',
-  async (data: SingleChatMessageType) => {
+  async (data: FireStoreSingleChatMessageType) => {
     await firestore().collection('Messages').add(data);
     return true;
+  },
+);
+
+export const increaseLike = createAsyncThunk(
+  'chatmessage/increaselike',
+  async data => {
+    console.log('Like to be increased');
+    firestore()
+      .collection('Messages')
+      .doc(data.item.docId)
+      .update({
+        likes: [...data.item.likes, data.uid],
+      });
   },
 );
 

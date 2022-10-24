@@ -21,8 +21,10 @@ import CustomTextInput from '../components/CustomTextInput';
 import {setChatMessages, useAppDispatch, writeMessage} from '../redux/store';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-import {SingleChatMessageType} from '../settings/types';
+import {SingleChatMessageType, SingleUserType} from '../settings/types';
 import style from './ChatRoom.style';
+import dateString from '../helpers/dateString';
+import findMessageSentDetails from '../helpers/findMessageSentDetails';
 
 const GroupChatRoom = () => {
   const [message, setMessage] = useState('');
@@ -72,7 +74,10 @@ const GroupChatRoom = () => {
         let result: SingleChatMessageType[] = [];
         querySnapshot.forEach(documentSnapshot => {
           const data = documentSnapshot.data();
-          result.push(data);
+          result.push({
+            docId: documentSnapshot.id,
+            ...data,
+          });
         });
         //console.log(result);
         // result = result.filter(
@@ -102,20 +107,30 @@ const GroupChatRoom = () => {
     item.sentId === user.uid ? (
       <View style={style.sentMessage}>
         <Text>{item.text}</Text>
-        <LikeButton disabled={true} position={'right'} setValue={() => {}} />
+        <LikeButton
+          disabled={true}
+          position={'right'}
+          item={item}
+          uid={user.uid}
+        />
         <View style={style.rightTriangle}></View>
       </View>
     ) : (
       <View style={style.receivedMessage}>
+        <Text style={{fontSize: 10, marginTop: -10, textAlign: 'right'}}>
+          {findMessageSentDetails(JSON.parse(u.members), item.sentId) +
+            ' on ' +
+            dateString(item.createdAt)}
+        </Text>
         <Text>{item.text}</Text>
-        <LikeButton value={likes} setValue={() => setLikes(prev => prev + 1)} />
+        <LikeButton item={item} uid={user.uid} />
         <View style={style.leftTriangle}></View>
       </View>
     );
 
   return (
     <View style={{flex: 1}}>
-      <View style={{flex: 1, margin: 10}}>
+      <View style={{flex: 1, margin: 15}}>
         <FlatList
           data={chatMessages}
           inverted

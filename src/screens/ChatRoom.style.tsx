@@ -5,8 +5,10 @@ const style = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: '#fff',
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderRadius: 10,
+    marginLeft: 10,
+    marginRight: 30,
     marginVertical: 15,
   },
 
@@ -33,7 +35,9 @@ const style = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 10,
-    margin: 5,
+    marginVertical: 15,
+    marginLeft: 30,
+    marginRight: 10,
   },
 
   rightTriangle: {
