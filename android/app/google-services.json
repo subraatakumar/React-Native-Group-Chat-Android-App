@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "73202514440",
+    "project_id": "reactnativegroupchat",
+    "storage_bucket": "reactnativegroupchat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73202514440:android:b5bfd56a6b68efd6892fbd",
+        "android_client_info": {
+          "package_name": "com.groupchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73202514440-634l85d1755o4ncov88q67aon3rdtkdj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0YfgSjXL7DkADxEy_4hf-MpvqgAcNbas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73202514440-634l85d1755o4ncov88q67aon3rdtkdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
