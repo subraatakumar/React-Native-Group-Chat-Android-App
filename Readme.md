@@ -1,3 +1,4 @@
 # Group Chat Android App using React Native & Redux
 
-![img]('https://github.com/subratsir/React-Native-Group-Chat-Android-App/blob/b5/apkrelease/readmeimages/Capture1.JPG')
+|-----|-----|
+![]('readmeimages/Capture1.JPG') | ![]('readmeimages/Capture2.JPG') | ![]('readmeimages/Capture3.JPG')
