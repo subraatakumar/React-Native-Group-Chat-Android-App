@@ -43,8 +43,6 @@ const Home = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
-  //console.log('HomeScreen showEllipse: ', showEllipse);
-
   const groupChatHomeHeader = () => {
     return (
       <View style={globalStyle.headerTitleContainer}>
@@ -73,8 +71,6 @@ const Home = () => {
 
   useEffect(() => {
     dispatch(showFlash());
-    console.log('calling getALlUsers');
-    //dispatch(getAllUsers());
     const firestoreusercollection = firestore().collection('Users');
 
     return firestoreusercollection.onSnapshot(querySnapshot => {

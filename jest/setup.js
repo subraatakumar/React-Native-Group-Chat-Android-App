@@ -1,3 +1,5 @@
+import {useSelector} from 'react-redux';
+
 jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 // jest.mock('@react-native-firebase/auth', () => ({
 //   GoogleAuthProvider: {
@@ -15,17 +17,27 @@ jest.mock('@react-native-firebase/auth', () => {
         displayName: 'Ganesh',
       },
     }),
-    default: jest.fn(() =>
-      Promise.resolve({
+    default: jest.fn().mockReturnValue({
+      currentUser: {
+        uid: '123456789',
+        email: 'ganesh@gmail.com',
+        displayName: 'Ganesh',
+      },
+      signInWithEmailAndPassword: jest.fn().mockReturnValue({
         currentUser: {
           uid: '123456789',
           email: 'ganesh@gmail.com',
           displayName: 'Ganesh',
         },
       }),
-    ),
+    }),
   };
 });
+
+jest.mock('react-redux', () => ({
+  ...jest.requireActual('react-redux'),
+  useSelector: jest.fn().mockReturnValue({}),
+}));
 
 /**
  * Firebase Auth Module

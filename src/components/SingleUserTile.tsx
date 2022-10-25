@@ -32,7 +32,6 @@ const SingleUserTile = ({
 }: SingleUserTileProps) => {
   const dispatch = useAppDispatch();
 
-  //console.log('Single User Tile Component u: ', u);
   const {groupDeletionError, groupDeletionStatus} = useSelector(
     (state: any) => state.groupReducer,
   );
@@ -75,16 +74,13 @@ const SingleUserTile = ({
       [
         {
           text: 'Cancel',
-          onPress: () => {
-            console.log('Cancel Pressed');
-          },
+          onPress: () => {},
           style: 'cancel',
         },
         {
           text: 'OK',
           onPress: () => {
             dispatch(deleteGroup(u));
-            console.log('Ok Pressed');
           },
         },
       ],

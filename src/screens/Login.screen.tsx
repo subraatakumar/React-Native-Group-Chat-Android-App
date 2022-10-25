@@ -38,7 +38,6 @@ const Login = () => {
   );
 
   useEffect(() => {
-    console.log('Current User: ', user);
     if (user !== null) {
       navigation.replace(Screens.HOME);
     }
@@ -79,9 +78,7 @@ const Login = () => {
     }
   }, [userStatus, userError]);
   const loginClicked = () => {
-    console.log(email, password, userStatus);
     dispatch(signIn({email, password}));
-    console.log('after signin', userStatus);
   };
 
   return (

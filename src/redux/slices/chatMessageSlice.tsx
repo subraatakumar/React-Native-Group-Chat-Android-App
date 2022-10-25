@@ -17,7 +17,6 @@ export const writeMessage = createAsyncThunk(
 export const increaseLike = createAsyncThunk(
   'chatmessage/increaselike',
   async data => {
-    console.log('Like to be increased');
     firestore()
       .collection('Messages')
       .doc(data.item.docId)

@@ -85,9 +85,7 @@ const SignUp = () => {
   }, [userStatus, userError]);
 
   const loginClicked = () => {
-    console.log(email, password, userStatus);
     dispatch(signUp({email, password, displayName}));
-    console.log('after Signup userstatus', userStatus);
   };
 
   return (

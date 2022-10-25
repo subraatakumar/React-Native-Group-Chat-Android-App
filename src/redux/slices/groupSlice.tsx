@@ -6,7 +6,6 @@ import {SingleUserType} from '../../settings/types';
 export const createGroup = createAsyncThunk(
   'group/create',
   async (data: SingleUserType) => {
-    console.log('Creating Group Data Received: ', data);
     await firestore()
       .collection('Users')
       .doc('' + data.uid)
@@ -17,7 +16,6 @@ export const createGroup = createAsyncThunk(
 export const deleteGroup = createAsyncThunk(
   'group/delete',
   async (data: SingleUserType) => {
-    console.log('Group Deletion Started!');
     await firestore()
       .collection('Users')
       .doc('' + data.uid)

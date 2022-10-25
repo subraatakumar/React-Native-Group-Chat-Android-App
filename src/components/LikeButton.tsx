@@ -27,14 +27,6 @@ const LikeButton = ({
 }: LikeButtonPropTypes) => {
   //const likes = item.likes.length;
   const likes = item && item?.likes ? item?.likes.length : 0;
-  const dispatch = useAppDispatch();
-
-  const increaseLikeByOne = () => {
-    if (!item.likes?.includes(uid) && !disabled) {
-      dispatch(increaseLike({item, uid}));
-    }
-  };
-
   return (
     <View style={{position: 'absolute', bottom: -15, [position]: 10}}>
       <CustomButton
@@ -47,7 +39,7 @@ const LikeButton = ({
         leftIconSize={10}
         m={0}
         p={2}
-        onPressFn={increaseLikeByOne}
+        onPressFn={setValue}
       />
     </View>
   );

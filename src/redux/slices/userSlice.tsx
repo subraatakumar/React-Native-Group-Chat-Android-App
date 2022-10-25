@@ -17,19 +17,16 @@ type signInDataType = {
 export const signIn = createAsyncThunk(
   'user/signin',
   async (data: signInDataType) => {
-    console.log('Sign in Started', data.email, data.password);
     const userData = await auth().signInWithEmailAndPassword(
       data.email,
       data.password,
     );
-    console.log(userData);
   },
 );
 
 export const signUp = createAsyncThunk(
   'user/signup',
   async (data: signUpDataType) => {
-    console.log('Sign in Started', data.email, data.password);
     const userData = await auth().createUserWithEmailAndPassword(
       data.email,
       data.password,
@@ -85,12 +82,10 @@ const userSlice = createSlice({
     builder
       .addCase(signIn.pending, (state, action) => {
         state.userStatus = Constants.LOADING;
-        console.log('Pending');
       })
       .addCase(signIn.fulfilled, state => {
         state.userStatus = Constants.FULFILLED;
         state.user = getInitialUser();
-        console.log('SignIn Fulfilled');
       })
       .addCase(signIn.rejected, (state, action) => {
         state.userStatus = Constants.REJECTED;
@@ -99,16 +94,13 @@ const userSlice = createSlice({
         } else {
           action?.error?.message && (state.userError = action.error.message);
         }
-        console.log('Rejected', action.error.message);
       })
       .addCase(signUp.pending, (state, action) => {
         state.userStatus = Constants.LOADING;
-        console.log('Pending');
       })
       .addCase(signUp.fulfilled, (state, action) => {
         state.userStatus = Constants.FULFILLED;
         state.user = getInitialUser();
-        console.log('Signup Fulfilled', action);
       })
       .addCase(signUp.rejected, (state, action) => {
         state.userStatus = Constants.REJECTED;
@@ -117,21 +109,17 @@ const userSlice = createSlice({
         } else {
           action?.error?.message && (state.userError = action.error.message);
         }
-        console.log('Rejected', action.error.message);
       })
       .addCase(signOut.pending, state => {
         state.signOutStatus = Constants.LOADING;
-        console.log('Pending');
       })
       .addCase(signOut.fulfilled, state => {
         state.signOutStatus = Constants.FULFILLED;
         state.user = null;
-        console.log('Fulfilled');
       })
       .addCase(signOut.rejected, (state, action) => {
         state.signOutStatus = Constants.REJECTED;
         action?.error?.message && (state.signOutError = action.error.message);
-        console.log('Signout Rejected', action.error.message);
       });
   },
 });

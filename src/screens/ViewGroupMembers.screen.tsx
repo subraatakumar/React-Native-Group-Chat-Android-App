@@ -9,7 +9,7 @@ const ViewGroupMembers = () => {
   useEffect(() => {}, []);
 
   const members = params?.members ? JSON.parse(params.members) : null;
-  //console.log(members);
+
   return (
     <View>
       <UserList users={members} onLongPress={() => {}} showGroups={false} />

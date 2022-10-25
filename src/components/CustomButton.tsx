@@ -68,7 +68,6 @@ const CustomButton = ({
   rightIconSize = 20,
   textStyle = {},
 }: customButtonProps) => {
-  //console.log(disabled, leftIcon);
   const innerContent = () => {
     return (
       <View
