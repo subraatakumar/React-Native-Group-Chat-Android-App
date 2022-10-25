@@ -13,8 +13,8 @@ type validations =
 type types = 'Text' | 'Password';
 
 type CustomTextInputProps = {
-  value: string;
-  setValue: Function;
+  value?: string | null;
+  setValue?: Function | null;
   err?: boolean;
   setErr?: Function;
   type?: types;
@@ -43,11 +43,12 @@ type CustomTextInputProps = {
   title?: string | null; // Same as placeholder if not mentioned
   hideTitle?: boolean; // if true title will be hiden. Default is false
   errorPosition?: 'default' | 'normal';
+  customRef?: any;
 };
 
 const CustomTextInput = ({
-  value,
-  setValue,
+  value = null,
+  setValue = null,
   err = false,
   setErr = () => {},
   type = 'Text',
@@ -67,15 +68,16 @@ const CustomTextInput = ({
   fct = null,
   fce = 'red',
   fci = null,
-  fst = 14,
-  fsi = 16,
-  fse = 10,
+  fst = h / 3,
+  fsi = h * 0.4,
+  fse = h / 4,
   bgci = '#fff',
   bgct = null,
   bgce = null,
   title = null,
   hideTitle = false,
   errorPosition = 'default',
+  customRef = null,
 }: CustomTextInputProps) => {
   const [compErr, setCompErr] = useState('');
   const [pText, setPtext] = useState(title ? ' ' + title + ' ' : '');
@@ -83,8 +85,8 @@ const CustomTextInput = ({
   let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
   const onChangeText = t => {
-    setValue(t);
-    // console.log(validation);
+    setValue && setValue(t);
+
     if (t === '') {
       setCompErr('');
       setPtext(title ? ' ' + title + ' ' : '');
@@ -94,109 +96,123 @@ const CustomTextInput = ({
     }
     for (let i = 0; i < validation.length; i++) {
       if (validation[i] === 'valid-email' && reg.test(t) === false) {
-        // console.log(validation[i], ' valid-email error');
         setCompErr(' Invalid Email Address ');
         !err && setErr(true);
         break;
       } else if (validation[i] === 'no-space' && t.trim().includes(' ')) {
-        // console.log(validation[i], ' no-space error');
         setCompErr(" Don't include space ");
         !err && setErr(true);
         break;
       } else if (validation[i] === 'only-digits' && isNaN(t)) {
-        // console.log(validation[i], ' only-digit error');
         setCompErr(" Don't include letters ");
         !err && setErr(true);
         break;
       } else if (validation[i] === 'only-letters' && /[0-9]/.test(t)) {
-        // console.log(validation[i], ' only-letters error');
         setCompErr(" Don't include numbers ");
         !err && setErr(true);
         break;
       } else if (validation[i] === 'max' && t.trim().length > max) {
-        // console.log(validation[i], ' max error');
         setCompErr(' Should not be greater then ' + max + ' characters ');
         !err && setErr(true);
         break;
       } else if (validation[i] === 'min' && t.trim().length < min) {
-        // console.log(validation[i], ' min error');
         setCompErr(' Should not be less then ' + min + ' characters ');
         !err && setErr(true);
         break;
       } else if (validation.length == i + 1) {
-        // console.log(validation[i], ' no-error');
         setCompErr('');
         setErr(false);
       }
     }
   };
-  return (
-    <View
-      style={{
-        marginBottom: m ? m : mb,
-        marginTop: m ? m : mt,
-        marginLeft: m ? m : ml,
-        marginRight: m ? m : mr,
-        padding: p,
-      }}>
-      <TextInput
-        value={value}
-        secureTextEntry={type === 'Password' ? true : false}
-        onChangeText={t => {
+
+  const isControlledComponent = () => {
+    if (value !== null && setValue !== null) {
+      return {
+        value: value,
+        onChangeText: t => {
           onChangeText(t);
-        }}
-        placeholder={placeholder ? placeholder : ''}
+        },
+      };
+    } else {
+      return {
+        onChangeText: t => {
+          customRef.current = t;
+        },
+        onEndEditing: ev => {
+          customRef.current = ev.nativeEvent.text;
+        },
+      };
+    }
+  };
+
+  return (
+    <>
+      <View
         style={{
-          ...globalStyles.planeTextInput,
-          height: h,
-          width: w,
-          fontSize: fsi,
-          backgroundColor: bgci,
-          color: fci,
-          padding: h ? h / 5 : null,
-
-          ...style,
-        }}
-      />
-      {!hideTitle && (
-        <Text
+          marginBottom: m ? m : mb,
+          marginTop: m ? m : mt,
+          marginLeft: m ? m : ml,
+          marginRight: m ? m : mr,
+          padding: p,
+        }}>
+        <TextInput
+          autoCorrect={false}
+          secureTextEntry={type === 'Password' ? true : false}
+          {...isControlledComponent()}
+          placeholder={placeholder ? placeholder : ''}
           style={{
-            position: 'absolute',
-            fontSize: fst,
-            color: fct,
-            top: -10,
-            marginLeft: 10,
-            backgroundColor: bgct ? bgct : bgci,
-            borderRadius: 3,
-          }}>
-          {`${pText}`}
-        </Text>
-      )}
+            ...globalStyles.planeTextInput,
+            height: h,
+            width: w,
+            fontSize: fsi,
+            backgroundColor: bgci,
+            color: fci,
+            padding: h ? h / 5 : null,
 
-      <Text
-        style={
-          errorPosition === 'normal'
-            ? {
-                color: fce,
-                fontSize: fse,
-                backgroundColor: bgce ? bgce : bgci,
-                borderRadius: 3,
-                width: w,
-                marginTop: 3,
-              }
-            : {
-                color: fce,
-                fontSize: fse,
-                position: 'absolute',
-                top: h - 10,
-                marginLeft: 10,
-                backgroundColor: bgce ? bgce : bgci,
-                borderRadius: 3,
-              }
-        }>
-        {compErr}
-      </Text>
-    </View>
+            ...style,
+          }}
+        />
+        {!hideTitle && (
+          <Text
+            style={{
+              position: 'absolute',
+              fontSize: fst,
+              color: fct,
+              top: -(fst * 0.8),
+              marginLeft: 10,
+              backgroundColor: bgct ? bgct : bgci,
+              borderRadius: 3,
+            }}>
+            {`${pText}`}
+          </Text>
+        )}
+
+        <Text
+          style={
+            errorPosition === 'normal'
+              ? {
+                  color: fce,
+                  fontSize: fse,
+                  backgroundColor: bgce ? bgce : bgci,
+                  borderRadius: 3,
+                  width: w,
+                  marginTop: 3,
+                }
+              : {
+                  color: fce,
+                  fontSize: fse,
+                  position: 'absolute',
+                  top: h - fse,
+                  marginLeft: 10,
+                  backgroundColor: bgce ? bgce : bgci,
+                  borderRadius: 3,
+                }
+          }>
+          {compErr}
+        </Text>
+      </View>
+    </>
   );
 };
 

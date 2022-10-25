@@ -1,49 +1,37 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import {MazicTextInput} from 'react-native-mazic-components';
+import React, {useEffect, useState, useRef} from 'react';
+import {View, Image, Text, FlatList, TouchableOpacity} from 'react-native';
 import CustomButton from '../components/CustomButton';
-import {Header} from 'react-native/Libraries/NewAppScreen';
-import man1 from '../assets/img/man1.png';
 import people from '../assets/img/people.png';
-import {deviceHeight, Screens, ThemeColors} from '../settings/config';
+import {Screens, ThemeColors} from '../settings/config';
 import {shadows} from '../styles/shadows';
 import LikeButton from '../components/LikeButton';
 import {globalStyle} from '../styles/global';
 import CustomTextInput from '../components/CustomTextInput';
-import {setChatMessages, useAppDispatch, writeMessage} from '../redux/store';
+import {
+  increaseLike,
+  setChatMessages,
+  useAppDispatch,
+  writeMessage,
+} from '../redux/store';
 import {useSelector} from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
-import {SingleChatMessageType, SingleUserType} from '../settings/types';
+import {SingleChatMessageType} from '../settings/types';
 import style from './ChatRoom.style';
 import dateString from '../helpers/dateString';
 import findMessageSentDetails from '../helpers/findMessageSentDetails';
 
 const GroupChatRoom = () => {
   const [message, setMessage] = useState('');
-  const [likes, setLikes] = useState(0);
 
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
 
   const {u} = useRoute().params;
   const {user} = useSelector((state: any) => state.userReducer);
-  const {chatMessages, writeMessageStatus, writeMessageError} = useSelector(
-    (state: any) => state.chatMessageReducer,
-  );
-
-  //console.log(u, writeMessageStatus, writeMessageError);
+  const {chatMessages} = useSelector((state: any) => state.chatMessageReducer);
 
   const ImageHeader = (props: any) => {
-    console.log('Image Header Props:', u.members);
-
     return (
       <TouchableOpacity
         onPress={() => {
@@ -79,10 +67,6 @@ const GroupChatRoom = () => {
             ...data,
           });
         });
-        //console.log(result);
-        // result = result.filter(
-        //   a => a.sentId === u.uid || a.sentId === user.uid,
-        // );
         result.sort((a, b) => a.createdAt - b.createdAt);
         dispatch(setChatMessages(result));
       }
@@ -90,21 +74,28 @@ const GroupChatRoom = () => {
   }, []);
 
   const sendMessage = () => {
-    dispatch(
-      writeMessage({
-        text: message,
-        receivedId: u.uid,
-        sentId: user.uid,
-        createdAt: Date.now(),
-        groupId: u.uid,
-        likes: [],
-      }),
-    );
-    setMessage('');
+    if (message !== '') {
+      dispatch(
+        writeMessage({
+          text: message,
+          receivedId: u.uid,
+          sentId: user.uid,
+          createdAt: Date.now(),
+          groupId: u.uid,
+          likes: [],
+        }),
+      );
+      setMessage('');
+    }
   };
 
-  const SingleChatMessage = ({item}) =>
-    item.sentId === user.uid ? (
+  const SingleChatMessage = ({item}) => {
+    const increaseLikeByOne = () => {
+      if (!(item.likes?.includes(user.uid) || item.sentId === user.uid)) {
+        dispatch(increaseLike({item, uid: user.uid}));
+      }
+    };
+    return item.sentId === user.uid ? (
       <View style={style.sentMessage}>
         <Text>{item.text}</Text>
         <LikeButton
@@ -112,6 +103,7 @@ const GroupChatRoom = () => {
           position={'right'}
           item={item}
           uid={user.uid}
+          setValue={increaseLikeByOne}
         />
         <View style={style.rightTriangle}></View>
       </View>
@@ -123,10 +115,11 @@ const GroupChatRoom = () => {
             dateString(item.createdAt)}
         </Text>
         <Text>{item.text}</Text>
-        <LikeButton item={item} uid={user.uid} />
+        <LikeButton item={item} uid={user.uid} setValue={increaseLikeByOne} />
         <View style={style.leftTriangle}></View>
       </View>
     );
+  };
 
   return (
     <View style={{flex: 1}}>
@@ -149,9 +142,9 @@ const GroupChatRoom = () => {
         }}>
         <View style={{flex: 1}}>
           <CustomTextInput
-            placeholder="Write Message Here"
             value={message}
             setValue={setMessage}
+            placeholder="Write Message Here"
             hideTitle={true}
             style={{borderRadius: 20}}
             w={'100%'}

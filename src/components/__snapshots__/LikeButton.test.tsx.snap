@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Like Button renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "bottom": -15,
+      "left": 10,
+      "position": "absolute",
+    }
+  }
+>
+  <View
+    accessibilityState={
+      Object {
+        "disabled": false,
+      }
+    }
+    accessible={true}
+    collapsable={false}
+    focusable={false}
+    onClick={[Function]}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#fff",
+        "borderRadius": 30,
+        "elevation": 8,
+        "height": null,
+        "margin": 0,
+        "opacity": 1,
+        "paddingBottom": 2,
+        "paddingLeft": 2,
+        "paddingRight": 2,
+        "paddingTop": 2,
+        "shadowColor": "rgba(6,146,239,1)",
+        "shadowOffset": Object {
+          "height": 5,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 8,
+        "width": "auto",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "alignItems": "center",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "width": "auto",
+        }
+      }
+    >
+      <Text
+        allowFontScaling={false}
+        selectable={false}
+        style={
+          Array [
+            Object {
+              "color": "rgba(0,128,105,1)",
+              "fontSize": 10,
+            },
+            Object {
+              "marginLeft": 2,
+              "marginRight": 3,
+            },
+            Object {
+              "fontFamily": "Ionicons",
+              "fontStyle": "normal",
+              "fontWeight": "normal",
+            },
+            Object {},
+          ]
+        }
+      >
+        
+      </Text>
+      <Text
+        style={
+          Object {
+            "color": "rgba(0,128,105,1)",
+            "fontSize": 12,
+            "textAlign": "center",
+            "width": "auto",
+          }
+        }
+      >
+        0
+      </Text>
+      <View
+        style={
+          Object {
+            "marginLeft": 2,
+            "marginRight": 2,
+          }
+        }
+      />
+    </View>
+  </View>
+</View>
+`;

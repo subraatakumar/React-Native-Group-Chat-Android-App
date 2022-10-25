@@ -26,7 +26,6 @@ const UserList = ({
 }: UserListPropTypes) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-  //console.log('userList component users: ', users);
 
   const onClickTile = (u: SingleUserType) => {
     if (u.isGroup) {

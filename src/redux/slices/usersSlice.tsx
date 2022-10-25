@@ -16,7 +16,6 @@ type StoreStateType = {
 };
 
 export const getAllUsers = createAsyncThunk('users/getallusers', async data => {
-  console.log('Started getting user data');
   return data.sort((a, b) => a.name.localeCompare(b.name));
 });
 
@@ -45,19 +44,13 @@ const usersSlice = createSlice({
       })
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state.usersStatus = Constants.FULFILLED;
-        console.log(
-          'Comparing',
-          !compareObj(state.users, action.payload, 'uid'),
-        );
         if (!compareObj(state.users, action.payload, 'uid')) {
-          console.log('Updating state of users');
           state.users = [...action.payload];
         }
       })
       .addCase(getAllUsers.rejected, (state, action) => {
         state.usersStatus = Constants.REJECTED;
         action?.error?.message && (state.usersError = action?.error?.message);
-        //console.log('getAllUsers Rejected', action);
       });
   },
 });

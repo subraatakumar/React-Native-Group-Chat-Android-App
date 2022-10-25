@@ -6,7 +6,6 @@ export const Element = {
   height: deviceHeight > 600 ? 40 : 30,
   width: deviceWidth > 350 ? 250 : 200,
 };
-console.log('Width, height : ', deviceWidth, deviceHeight);
 
 export const AppConfig = {
   title: 'Group Chat',

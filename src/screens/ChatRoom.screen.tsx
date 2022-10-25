@@ -29,10 +29,7 @@ const ChatRoom = () => {
     (state: any) => state.chatMessageReducer,
   );
 
-  //console.log(u, writeMessageStatus, writeMessageError);
-
   const ImageHeader = (props: any) => {
-    //console.log(props);
     return (
       <View style={globalStyle.headerTitleContainer}>
         <Image source={man1} style={{width: 40, height: 40}} />
@@ -60,7 +57,6 @@ const ChatRoom = () => {
           const data = documentSnapshot.data();
           result.push(data);
         });
-        //console.log(result);
         result = result.filter(
           a => a.sentId === u.uid || a.sentId === user.uid,
         );
@@ -88,13 +84,13 @@ const ChatRoom = () => {
     item.sentId === user.uid ? (
       <View style={style.sentMessage}>
         <Text>{item.text}</Text>
-        <LikeButton disabled={true} position={'right'} setValue={() => {}} />
+        {/* <LikeButton disabled={true} position={'right'} setValue={() => {}} /> */}
         <View style={style.rightTriangle}></View>
       </View>
     ) : (
       <View style={style.receivedMessage}>
         <Text>{item.text}</Text>
-        <LikeButton value={likes} setValue={() => setLikes(prev => prev + 1)} />
+        {/* <LikeButton value={likes} setValue={() => setLikes(prev => prev + 1)} /> */}
         <View style={style.leftTriangle}></View>
       </View>
     );
