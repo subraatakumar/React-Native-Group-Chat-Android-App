@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Logo renders successfully 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "justifyContent": "center",
+    }
+  }
+>
+  <Image
+    source="test-file-stub"
+    style={
+      Object {
+        "height": 166.66666666666666,
+        "width": 250,
+      }
+    }
+  />
+  <Text
+    style={
+      Object {
+        "color": "rgba(0,128,105,1)",
+        "fontSize": 41.666666666666664,
+        "fontWeight": "bold",
+        "marginBottom": 37.5,
+        "textAlign": "center",
+      }
+    }
+  >
+    Group Chat
+  </Text>
+</View>
+`;

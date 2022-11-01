@@ -12,7 +12,6 @@ import {
 } from 'react-native';
 import CustomButton from '../components/CustomButton';
 import {AppConfig, Constants, Screens, ThemeColors} from '../settings/config';
-import SingleUserTile from '../components/SingleUserTile';
 import {globalStyle} from '../styles/global';
 import ModalMenu from '../navigator/ModalMenu';
 import UserList from '../components/UserList';

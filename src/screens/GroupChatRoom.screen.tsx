@@ -35,7 +35,10 @@ const GroupChatRoom = () => {
     return (
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(Screens.VIEWGROUPMEMBERS, {members: u.members});
+          navigation.navigate(Screens.VIEWGROUPMEMBERS, {
+            members: u.members,
+            uid: user.uid,
+          });
         }}>
         <View style={globalStyle.headerTitleContainer}>
           <Image source={people} style={{width: 40, height: 40}} />
