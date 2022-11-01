@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import LikeButton from './LikeButton';
+import LikeButton from '../../src/components/LikeButton';
 
 test('Like Button renders correctly', () => {
   const tree = renderer

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Flash Component renders correctly 1`] = `
+<Modal
+  hardwareAccelerated={false}
+  visible={Object {}}
+/>
+`;
