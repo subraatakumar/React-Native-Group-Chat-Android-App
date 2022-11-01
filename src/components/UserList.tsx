@@ -1,16 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {memo, useEffect} from 'react';
 import {TouchableOpacity, FlatList, ScrollView, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  hideModal,
-  resetUsersData,
-  resetUsersStatus,
-  showModal,
-  useAppDispatch,
-} from '../redux/store';
-import {Constants, Screens} from '../settings/config';
-import {CustomModalTypes} from './CustomModal';
+import {useSelector} from 'react-redux';
+import {useAppDispatch} from '../redux/store';
+import {Screens} from '../settings/config';
 import SingleUserTile from './SingleUserTile';
 import {SingleUserType} from '../settings/types';
 
@@ -26,6 +19,7 @@ const UserList = ({
 }: UserListPropTypes) => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const {user} = useSelector((state: any) => state.userReducer);
 
   const onClickTile = (u: SingleUserType) => {
     if (u.isGroup) {
@@ -40,7 +34,11 @@ const UserList = ({
       <TouchableOpacity
         onPress={() => onClickTile(u)}
         onLongPress={() => onLongPress(u)}>
-        <SingleUserTile u={u} />
+        <SingleUserTile
+          u={u}
+          dispatch={dispatch}
+          uid={user?.uid ? user.uid : null}
+        />
       </TouchableOpacity>
     ) : (
       <></>

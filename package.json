@@ -31,6 +31,8 @@
     "@babel/core": "^7.12.9",
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
+    "@testing-library/jest-native": "^5.1.2",
+    "@testing-library/react-native": "^11.3.0",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^26.0.23",
     "@types/react": "^18.0.21",
@@ -49,8 +51,11 @@
     "preset": "react-native",
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?@?react-native|react-native|react-native-vector-icons|react-native-vector-icons/Ionicons|@react-native-community|@react-navigation/(.*))"
-     ],
-    "coveragePathIgnorePatterns": ["<rootDir>/ios/","<rootDir>/node_modules/"],
+    ],
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/ios/",
+      "<rootDir>/node_modules/"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",
@@ -65,6 +70,6 @@
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
       "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
-    }    
+    }
   }
 }

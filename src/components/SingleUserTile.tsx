@@ -6,12 +6,7 @@ import man1 from '../assets/img/man1.png';
 import people from '../assets/img/people.png';
 import {shadows} from '../styles/shadows';
 import {SingleUserType} from '../settings/types';
-import {
-  deleteGroup,
-  hideModal,
-  showModal,
-  useAppDispatch,
-} from '../redux/store';
+import {deleteGroup, hideModal, showModal} from '../redux/store';
 import {CustomModalTypes} from './CustomModal';
 import {useSelector} from 'react-redux';
 
@@ -21,6 +16,8 @@ type SingleUserTileProps = {
   m?: number | null; // Margin
   br?: number | null; //
   u: SingleUserType;
+  dispatch?: any;
+  uid: string | null; // Logged in user id
 };
 
 const SingleUserTile = ({
@@ -29,9 +26,9 @@ const SingleUserTile = ({
   p = 5,
   m = 5,
   br = 20,
+  dispatch = () => {},
+  uid = null,
 }: SingleUserTileProps) => {
-  const dispatch = useAppDispatch();
-
   const {groupDeletionError, groupDeletionStatus} = useSelector(
     (state: any) => state.groupReducer,
   );
@@ -87,6 +84,10 @@ const SingleUserTile = ({
     );
   };
 
+  const isTrashIcon = () =>
+    u.members ? JSON.parse(u.members)[0].uid === uid : false;
+
+  //u.members && console.log('Admin:', JSON.parse(u.members)[0].uid, uid);
   return (
     <View
       style={{
@@ -107,7 +108,7 @@ const SingleUserTile = ({
         </Text>
         <Text style={{fontSize: 12}}>Latest Message</Text>
       </View>
-      {u.isGroup && (
+      {isTrashIcon() && (
         <CustomButton
           leftIcon="trash"
           bgc={ThemeColors.primary}

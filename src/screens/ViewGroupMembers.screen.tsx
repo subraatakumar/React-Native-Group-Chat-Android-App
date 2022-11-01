@@ -8,7 +8,10 @@ const ViewGroupMembers = () => {
 
   useEffect(() => {}, []);
 
-  const members = params?.members ? JSON.parse(params.members) : null;
+  const members =
+    params?.members && params?.uid
+      ? JSON.parse(params.members).filter(m => m.uid != params?.uid)
+      : null;
 
   return (
     <View>
