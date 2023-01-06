@@ -12,7 +12,7 @@
 </td><td></td>
 </tr>
 <tr><td>
-    <img src="./readmeimages/Capture1.JPG" width=150px height = auto >
+    <img src="https://raw.githubusercontent.com/subrataindia/React-Native-Group-Chat-Android-App/main/readmeimages/Capture1.JPG" width=150px height = auto >
 </td><td>
 <img src="./readmeimages/Capture2.JPG" width=150px height = auto >
 </td><td>
