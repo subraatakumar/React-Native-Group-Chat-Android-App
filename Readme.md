@@ -1,5 +1,7 @@
 # Group Chat Android App using React Native & Redux
 
+## [APK Link](https://drive.google.com/file/d/1m5tZnSW4uOuj5V0ndNCj-Aqg0zJ8Aqve/view?usp=sharing) for testing
+
 ## App UI Screenshots
 
 <table>
