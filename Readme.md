@@ -44,7 +44,7 @@
 
 ## 👋 Author
 
-- [Subrata Das](https://github.com/subratsir)
+- [Subrata Das](https://github.com/subrataindia)
 
 ## Show your support
 
